@@ -1,9 +1,14 @@
 public class KnightBoard{
-
+  int[][] board;
   @throws IllegalArgumentException when either parameter is negative.
 
   public KnightBoard(int startingRows,int startingCols){
-
+    board = new int[startingRows, startingCols];
+    for(int r = 0; r < board.length; r++) {
+      for(int c = 0; c < board[r].length; c++) {
+        board[r][c] = 0;
+      }
+    }
   }
 
   public String toString(){
@@ -25,7 +30,7 @@ public class KnightBoard{
   }
 
   private boolean solveH(int row ,int col, int level){
-    
+
   }
 
 }
