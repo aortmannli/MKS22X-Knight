@@ -1,5 +1,7 @@
 public class KnightBoard{
-  int[][] board;
+  private int[][] board;
+  private int area;
+
   @throws IllegalArgumentException when either parameter is negative.
 
   public KnightBoard(int startingRows,int startingCols){
@@ -12,13 +14,26 @@ public class KnightBoard{
   }
 
   public String toString(){
-
+    String out = "";
+     for (int r = 0; r < board.length; r++) {
+       for (int c = 0; c < board[0].length; c++) {
+         if (board[r][c] == 0) out += "_ ";
+         else out += " " + board[r][c];
+       }
+       out += "\n";
+     }
+    return out;
   }
 
   @throws IllegalStateException when the board contains non-zero values.
   @throws IllegalArgumentException when either parameter is negative
   or out of bounds.
   public boolean solve(int startingRow, int startingCol){
+    return solveHelp(startingRow, startingCol, 0);
+  }
+
+  public boolean solveHelp(int r, int c, int num){
+    if (num == area) return true;
 
   }
 
