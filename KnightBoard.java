@@ -36,18 +36,16 @@ public class KnightBoard{
   public boolean solveHelp(int r, int c, int num){
     if (num == area) return true;
     if (r < 0 || c < 0 || r >= board.length || c >= board[0].length) return false;
-    
+    solveHelp(r, c, num+1);
+    return false;
   }
 
   @throws IllegalStateException when the board contains non-zero values.
   @throws IllegalArgumentException when either parameter is negative
    or out of bounds.
   public int countSolutions(int startingRow, int startingCol){
-
+    return 0;
   }
 
-  private boolean solveH(int row ,int col, int level){
-
-  }
 
 }
