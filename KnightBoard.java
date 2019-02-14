@@ -13,8 +13,10 @@ public class KnightBoard{
       }
     }
     area = startingRows*startingCols;
-    moves = new int[][]{
-
+    moves = new int[][]{{2,1}, {-2,-1},
+                {-2,1}, {2,-1},
+                {1,2}, {-1,-2},
+                {1,2}, {1,-2}
                                     };
   }
 
@@ -45,7 +47,11 @@ public class KnightBoard{
   public boolean solveHelp(int r, int c, int num){
     if (num == area) return true;
     if (r < 0 || c < 0 || r >= board.length || c >= board[0].length) return false;
-    solveHelp(r, c, num+1);
+    for (int[] i : moves){
+        if(board[r][c] == 0) board[r][c] = num;
+        return solveHelp(row + i[0], col + i[1], level + 1);
+    }
+    board[row + i[0]][col + i[1]] = 0;
     return false;
   }
 
