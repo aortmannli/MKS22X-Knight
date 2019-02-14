@@ -46,10 +46,10 @@ public class KnightBoard{
 
   public boolean solveHelp(int r, int c, int num){
     if (num == area) return true;
-    if (r < 0 || c < 0 || r >= board.length || c >= board[0].length) return false;
     for (int[] i : moves){
         if(board[r][c] == 0) board[r][c] = num;
-        return solveHelp(row + i[0], col + i[1], level + 1);
+        if (r < 0 || c < 0 || r >= board.length || c >= board[0].length) return false;
+        return solveHelp(row + i[0], col + i[1], num + 1);
     }
     board[row + i[0]][col + i[1]] = 0;
     return false;
@@ -66,6 +66,18 @@ public class KnightBoard{
     }
     return 0;
   }
+
+  public int cSHelp(int r, int c, int num){
+    int out = 0;
+    if(x == area) return 1;
+    for (int[] i : moves){
+      if(board[r][c] == 0) board[r][c] = num;
+      if((row + i[0] >= 0 || row + i[0] < board.length || col + i[1] >= 0 || col + i[1] < board[0].length) && solve(r,c)){
+        out += cShelp(row + i[0], col + i[1], num + 1);
+      }
+    }
+    board[row + i[0]][col + i[1]] = 0;
+ }
 
 
 }
