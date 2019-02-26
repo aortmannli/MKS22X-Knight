@@ -1,9 +1,10 @@
+import java.util.*;
+
 public class KnightBoard{
   private int[][] board;
   private int area;
   private int[][] moves;
 
-  @throws IllegalArgumentException when either parameter is negative.
 
   public KnightBoard(int startingRows,int startingCols){
     board = new int[startingRows, startingCols];
@@ -76,24 +77,32 @@ public class KnightBoard{
   @throws IllegalArgumentException when either parameter is negative
    or out of bounds.
   public int countSolutions(int startingRow, int startingCol){
+    if(startingCol < 0 || startingRow < 0){
+        throw new IllegalArgumentException();
+    }
     for(int r = 0; r < board.length; r++) {
       for(int c = 0; c < board[r].length; c++) {
         if(board[r][c] != 0) throw new IllegalStateException();
       }
     }
-    return 0;
+    return cSHelp(startingRow, startingCol, 1);
   }
 
   public int cSHelp(int r, int c, int num){
     int out = 0;
+    board[row][col] = num;
+    if (level == board.length * board[0].length){
+        out++;
+    }
     if(x == area) return 1;
     for (int[] i : moves){
-      if(board[r][c] == 0) board[r][c] = num;
-      if((row + i[0] >= 0 || row + i[0] < board.length || col + i[1] >= 0 || col + i[1] < board[0].length) && solve(r,c)){
-        out += cShelp(row + i[0], col + i[1], num + 1ato);
+      if(row + i[0] >= 0 && row + i[0] < board.length && col + i[1] >= 0 && col + i[1] < board[0].length
+         && board[row + i[0]][col + i[1]] == 0){
+          output += countH(row + i[0], col + i[1], level + 1);
       }
     }
-    board[row + i[0]][col + i[1]] = 0;
+    board[row][col] = 0;
+    return out;
  }
 
 
