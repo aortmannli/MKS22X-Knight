@@ -21,6 +21,8 @@ public class KnightBoard{
                 {1,2}, {-1,-2},
                 {1,2}, {1,-2}
                               };
+    nMoves = new Square[startingRows][startingCols];
+    nMoves();
   }
 
   public String toString(){
@@ -49,14 +51,37 @@ public class KnightBoard{
   }
 
 //gets all the possible squares to move to from a given place on the board and sorts them through the number of possibilities
-  public ArrayList<Square> getMoves(int row, int col){
+  public ArrayList<Square> getMoves(int r, int c){
     ArrayList<Square> pSquare = new ArrayList<Square>();
+    Square S = new Square(0,0,0);
     for (int[] z : moves){
-      Square S = nMoves[row + z[0]][col + z[1]];
-      if (S != null) pSquare.add(S);
+      if(c + z[0] >= 0 && c + z[0] < board.length && r + z[1] >= 0 && r + z[1] < board[0].length){
+          S = nMoves[c + z[0]][r + z[1]];
+      }
+      if (S!= null) pSquare.add(S);
     }
     Collections.sort(pSquare);
     return pSquare;
+  }
+
+  private boolean addKnight(int r, int c, int num){
+    if (r < 0 || c < 0 || r >= board.length || c  >= board[0].length || board[r][c] != 0) return false;
+    board[r][c] = num;
+    for (int[] z : moves){
+      if(c + z[0] >= 0 && c + z[0] < board.length && r + z[1] >= 0 && r + z[1] < board[0].length){
+        nMoves[c + z[0]][r + z[1]].changeMoves(-1);
+      }
+    }
+    return true;
+  }
+
+  private void removeKnight(int r, int c){
+    board[r][c] = 0;
+    for (int[] z : moves){
+      if(c + z[0] >= 0 && c + z[0] < board.length && r + z[1] >= 0 && r + z[1] < board[0].length){
+        nMoves[c + z[0]][r + z[1]].changeMoves(1);
+      }
+    }
   }
 
   public boolean solve(int startingRow, int startingCol){
@@ -74,7 +99,7 @@ public class KnightBoard{
   public boolean solveHelp(int r, int c, int num){
     if (num == area) return true;
     //iterates through the possible moves
-    for (int[] i : moves){
+    /*for (int[] i : moves){
       // sets the square value to ther number move you're on
       if(board[r][c] == 0) board[r][c] = num;
       //checks if youre inside the board
@@ -82,6 +107,11 @@ public class KnightBoard{
           return solveHelp(r + i[0], c + i[1], num + 1);
       }
       board[r + i[0]][c + i[1]] = 0;
+    }*/
+    ArrayList<Square> pos = getMoves(r,c);
+    for(Square z : pos){
+      if(board[r][c] == 0) board[r][c] = num;
+      return solveHelp(z.getCol(), z.getRow(), num + 1);
     }
     return false;
   }
@@ -97,7 +127,7 @@ public class KnightBoard{
     }
     return cSHelp(startingRow, startingCol, 1);
   }
-
+/*
   public int cSHelp(int r, int c, int num){
     int out = 0;
     board[r][c] = num;
@@ -110,9 +140,14 @@ public class KnightBoard{
             out += cSHelp(r + i[0], c + i[1], num + 1);
         }
     }
+    ArrayList<Square> pos = getMoves(r,c);
+    for(Square z : pos){
+      out += cSHelp(z.getCol(), z.getRow(), num + 1);
+    }
     board[r][c] = 0;
     return out;
-  }
+
+  }*
 
 
 }
