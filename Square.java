@@ -1,4 +1,4 @@
-public class Square implements Comparable<Tile>{
+public class Square implements Comparable<Square>{
   private int row;
   private int col;
   private int moves;
