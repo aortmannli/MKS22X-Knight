@@ -18,7 +18,7 @@ public class KnightBoard{
     moves = new int[][]{
                 {2,1}, {-2,-1},
                 {-2,1}, {2,-1},
-                {1,2}, {-1,-2},
+                {-1,2}, {-1,-2},
                 {1,2}, {1,-2}
                               };
     nMoves = new Square[startingRows][startingCols];
@@ -96,6 +96,21 @@ public class KnightBoard{
     return solveHelp(startingRow, startingCol, 0);
   }
 
+//non-optimized
+  private boolean solveH(int row ,int col, int level){
+        board[row][col] = level;
+        if (level == area) return true;
+        for (int[] i : moves){
+            if(row + i[0] >= 0 && row + i[0] < board.length && col + i[1] >= 0 && col + i[1] < board[0].length && board[row + i[0]][col + i[1]] == 0
+               && solveH(row + i[0], col + i[1], level + 1)){
+                return true;
+            }
+        }
+        board[row][col] = 0;
+        return false;
+    }
+
+
   public boolean solveHelp(int r, int c, int num){
     if (num == area) return true;
     //iterates through the possible moves
@@ -125,9 +140,27 @@ public class KnightBoard{
         if(board[r][c] != 0) throw new IllegalStateException();
       }
     }
-    return cSHelp(startingRow, startingCol, 1);
+    return countH(startingRow, startingCol, 1);
   }
-/*
+
+  private int countH(int r ,int c, int num){
+    int out = 0;
+    board[r][c] = num;
+    if (num == board.length * board[0].length){
+        out++;
+    }
+    for (int[] i : moves){
+        if(r + i[0] >= 0 && r + i[0] < board.length && c + i[1] >= 0 && c + i[1] < board[0].length
+           && board[r + i[0]][c + i[1]] == 0){
+            out += countH(r + i[0], c + i[1], num + 1);
+        }
+    }
+    board[r][c] = 0;
+    return out;
+  }
+
+
+
   public int cSHelp(int r, int c, int num){
     int out = 0;
     board[r][c] = num;
@@ -147,7 +180,7 @@ public class KnightBoard{
     board[r][c] = 0;
     return out;
 
-  }*
+  }
 
 
 }
