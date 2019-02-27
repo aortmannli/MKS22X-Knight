@@ -38,6 +38,9 @@ public class KnightBoard{
   @throws IllegalArgumentException when either parameter is negative
   or out of bounds.
   public boolean solve(int startingRow, int startingCol){
+    if(startingCol < 0 || startingRow < 0){
+        throw new IllegalArgumentException();
+    }
     for(int r = 0; r < board.length; r++) {
       for(int c = 0; c < board[r].length; c++) {
         if(board[r][c] != 0) throw new IllegalStateException();
@@ -71,6 +74,8 @@ public class KnightBoard{
     }
     board[row + i[0]][col + i[1]] = 0;
     return false;
+
+
   }
 
   @throws IllegalStateException when the board contains non-zero values.
