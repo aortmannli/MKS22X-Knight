@@ -97,12 +97,12 @@ public class KnightBoard{
   }
 
 //non-optimized
-  private boolean solveH(int row ,int col, int level){
+  private boolean solveHelp(int row ,int col, int level){
         board[row][col] = level;
         if (level == area) return true;
         for (int[] i : moves){
             if(row + i[0] >= 0 && row + i[0] < board.length && col + i[1] >= 0 && col + i[1] < board[0].length && board[row + i[0]][col + i[1]] == 0
-               && solveH(row + i[0], col + i[1], level + 1)){
+               && solveHelp(row + i[0], col + i[1], level + 1)){
                 return true;
             }
         }
@@ -110,8 +110,8 @@ public class KnightBoard{
         return false;
     }
 
-
-  public boolean solveHelp(int r, int c, int num){
+//optimized
+  public boolean solveH(int r, int c, int num){
     if (num == area) return true;
     //iterates through the possible moves
     /*for (int[] i : moves){
@@ -126,7 +126,7 @@ public class KnightBoard{
     ArrayList<Square> pos = getMoves(r,c);
     for(Square z : pos){
       if(board[r][c] == 0) board[r][c] = num;
-      return solveHelp(z.getCol(), z.getRow(), num + 1);
+      return solveH(z.getCol(), z.getRow(), num + 1);
     }
     return false;
   }
@@ -140,10 +140,29 @@ public class KnightBoard{
         if(board[r][c] != 0) throw new IllegalStateException();
       }
     }
-    return countH(startingRow, startingCol, 1);
+    return csHelp(startingRow, startingCol, 1);
   }
 
-  private int countH(int r ,int c, int num){
+//not optimized
+  private int csHelp(int r ,int c, int num){
+    int out = 0;
+    board[r][c] = num;
+    if (num == board.length * board[0].length){
+        out++;
+    }
+    for (int[] i : moves){
+        if(r + i[0] >= 0 && r + i[0] < board.length && c + i[1] >= 0 && c + i[1] < board[0].length
+           && board[r + i[0]][c + i[1]] == 0){
+            out += csHelp(r + i[0], c + i[1], num + 1);
+        }
+    }
+    board[r][c] = 0;
+    return out;
+  }
+
+
+//optimized
+  public int countH(int r, int c, int num){
     int out = 0;
     board[r][c] = num;
     if (num == board.length * board[0].length){
@@ -155,27 +174,9 @@ public class KnightBoard{
             out += countH(r + i[0], c + i[1], num + 1);
         }
     }
-    board[r][c] = 0;
-    return out;
-  }
-
-
-
-  public int cSHelp(int r, int c, int num){
-    int out = 0;
-    board[r][c] = num;
-    if (num == board.length * board[0].length){
-        out++;
-    }
-    for (int[] i : moves){
-        if(r + i[0] >= 0 && r + i[0] < board.length && c + i[1] >= 0 && c + i[1] < board[0].length
-           && board[r + i[0]][c + i[1]] == 0){
-            out += cSHelp(r + i[0], c + i[1], num + 1);
-        }
-    }
     ArrayList<Square> pos = getMoves(r,c);
     for(Square z : pos){
-      out += cSHelp(z.getCol(), z.getRow(), num + 1);
+      out += countH(z.getCol(), z.getRow(), num + 1);
     }
     board[r][c] = 0;
     return out;
