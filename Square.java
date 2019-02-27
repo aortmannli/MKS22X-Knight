@@ -27,7 +27,7 @@ public class Square implements Comparable<Square>{
   }
 
   public int compareTo(Square yeet){
-    return moves - yeet.moves();
+    return moves - yeet.getMoves();
   }
 
 }

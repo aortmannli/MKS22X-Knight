@@ -35,18 +35,29 @@ public class KnightBoard{
     return out;
   }
 
-  public void nMoves(){
+//just counts the number of moves possible
+  private void nMoves(){
     int possible = 0;
     for(int c = 0, r = 0; (c < board.length) && (r < board[0].length); c++, r++){
       for (int[] z : moves){
-          if(c + z[0] >= 0 && c + z[0] < board.length && r + z[1] >= 0 && r + z[1] < board[0].length){
-              possible++;
-          }
+        if(c + z[0] >= 0 && c + z[0] < board.length && r + z[1] >= 0 && r + z[1] < board[0].length){
+            possible++;
+        }
       }
       nMoves[c][r] = new Square(c, r, possible);
     }
   }
 
+//gets all the possible squares to move to from a given place on the board and sorts them through the number of possibilities
+  public ArrayList<Square> getMoves(int row, int col){
+    ArrayList<Square> pSquare = new ArrayList<Square>();
+    for (int[] z : moves){
+      Square S = nMoves[row + z[0]][col + z[1]];
+      if (S != null) pSquare.add(S);
+    }
+    Collections.sort(pSquare);
+    return pSquare;
+  }
 
   public boolean solve(int startingRow, int startingCol){
     if(startingCol < 0 || startingRow < 0){
